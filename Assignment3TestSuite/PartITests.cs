@@ -56,7 +56,7 @@ public class PartITests
         var request = new Request
         {
             Path = "/api/xxx",
-            Date = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()
+            Date = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(),
         };
         // Act
         var result = requestValidator.ValidateRequest(request);
