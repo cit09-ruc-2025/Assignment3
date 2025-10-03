@@ -10,7 +10,26 @@ namespace Assignment3
     {
         public Response ValidateRequest(Request request)
         {
-            throw new NotImplementedException();
+            var list = new List<string>();
+
+            var methodMissing = string.IsNullOrWhiteSpace(request.Method);
+            var methodMissingMessage = "missing method";
+            if (methodMissing) list.Add(methodMissingMessage);
+
+            var validMethods = new List<string>()
+            {
+                "get",
+                "post",
+                "update",
+                "delete",
+            };
+            var methodInvalid = !validMethods.Contains(request.Method);
+            var methodInvalidMessage = "illegal method";
+            if (methodInvalid) list.Add(methodInvalidMessage);
+
+
+
+            return new Response() { Status = string.Join(", ", list) };
         }
 
     }
