@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Assignment3
@@ -18,7 +19,7 @@ namespace Assignment3
             ValidateBody(request, ref list);
 
             var response = new Response();
-            response.Status = list.Count > 0 ? "4 " + string.Join(", ", list) : string.Empty; // Append Bad Request status code if there are errors
+            response.Status = list.Count > 0 ? "4 " + string.Join(", ", list) : "1 Ok"; // Append Bad Request status code if there are errors
             return response;
         }
 
@@ -48,7 +49,8 @@ namespace Assignment3
         #region Path Validation
         private void ValidatePath(Request request, ref List<string> errorList)
         {
-            if (string.IsNullOrWhiteSpace(request.Path)) errorList.Add("missing path");
+            if (string.IsNullOrWhiteSpace(request.Path)) { errorList.Add("missing path"); return; }
+            if (!(new UrlParser()).ParseUrl(request.Path)) errorList.Add("illegal path");
         }
         #endregion
 
@@ -69,10 +71,22 @@ namespace Assignment3
         #region Body Validation
         private void ValidateBody(Request request, ref List<string> errorList)
         {
+            var requiresBody = new List<string>() { "update", "create", "echo" };
+            if (!requiresBody.Contains(request.Method)) return;
+
             if (string.IsNullOrWhiteSpace(request.Body))
             {
                 errorList.Add("missing body");
                 return;
+            }
+
+            try
+            {
+                var parse = JsonSerializer.Deserialize<object>(request.Body);
+            }
+            catch (Exception ex)
+            {
+                errorList.Add("illegal body");
             }
         }
 

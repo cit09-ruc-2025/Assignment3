@@ -13,6 +13,7 @@ namespace Assignment3
         public string Path { get; set; }
         public bool ParseUrl(string url)
         {
+            if (string.IsNullOrWhiteSpace(url)) return false;
             var split = url.Split('/').Where(s => !string.IsNullOrEmpty(s)).ToArray();
             if (split.Length < 2 || split.Length > 3) return false;
 
