@@ -15,6 +15,7 @@ namespace Assignment3
             ValidateMethod(request, ref list);
             ValidatePath(request, ref list);
             ValidateDate(request, ref list);
+            ValidateBody(request, ref list);
 
             var response = new Response();
             response.Status = list.Count > 0 ? "4 " + string.Join(", ", list) : string.Empty; // Append Bad Request status code if there are errors
@@ -65,5 +66,17 @@ namespace Assignment3
         }
         #endregion
 
+        #region Body Validation
+        private void ValidateBody(Request request, ref List<string> errorList)
+        {
+            if (string.IsNullOrWhiteSpace(request.Body))
+            {
+                errorList.Add("missing body");
+                return;
+            }
+        }
+
+
+        #endregion
     }
 }
