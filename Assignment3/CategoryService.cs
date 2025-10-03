@@ -9,29 +9,42 @@ namespace Assignment3
 {
     public class CategoryService : ICategoryService
     {
+        private readonly List<Category> _repository = [new Category() { Id = 1, Name = "Beverages" }, new Category() { Id = 2, Name = "Condiments" }, new Category() { Id = 3, Name = "Confections" }];
+
         public bool CreateCategory(int id, string name)
         {
-            throw new NotImplementedException();
+            if (_repository.Any(c => c.Id == id)) return false;
+
+            _repository.Add(new Category() { Id = id, Name = name });
+            return true;
         }
 
         public bool DeleteCategory(int id)
         {
-            throw new NotImplementedException();
+            var categoryToBeDeleted = _repository.FirstOrDefault(c => c.Id == id);
+            if (categoryToBeDeleted == null) return false;  
+
+            _repository.Remove(categoryToBeDeleted);
+            return true;
         }
 
         public List<Category> GetCategories()
         {
-            throw new NotImplementedException();
+            return _repository; 
         }
 
         public Category GetCategory(int cid)
         {
-            throw new NotImplementedException();
+            return _repository.FirstOrDefault(c => c.Id == cid);
         }
 
         public bool UpdateCategory(int id, string newName)
         {
-            throw new NotImplementedException();
+            var categoryToBeUpdated = _repository.FirstOrDefault(c => c.Id == id);
+            if (categoryToBeUpdated == null) return false;
+
+            categoryToBeUpdated.Name = newName;
+            return true;
         }
     }
 }
