@@ -227,18 +227,18 @@ public class PartITests
         Assert.Equal(3, categories.Count);
     }
 
-    //    [Fact]
-    //    public void CategoryService_GetCategoryById_ShouldReturnCorrectCategory()
-    //    {
-    //        // Arrange
-    //        var categoryService = new CategoryService();
-    //        // Act
-    //        var category = categoryService.GetCategory(2);
-    //        // Assert
-    //        Assert.NotNull(category);
-    //        Assert.Equal(2, category.Id);
-    //        Assert.Equal("Condiments", category.Name);
-    //    }
+    [Fact]
+    public void CategoryService_GetCategoryById_ShouldReturnCorrectCategory()
+    {
+        // Arrange
+        var categoryService = new CategoryService();
+        // Act
+        var category = categoryService.GetCategory(2);
+        // Assert
+        Assert.NotNull(category);
+        Assert.Equal(2, category.Id);
+        Assert.Equal("Condiments", category.Name);
+    }
 
     //    [Fact]
     //    public void CategoryService_GetCategoryById_NonExistent()

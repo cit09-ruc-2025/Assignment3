@@ -34,7 +34,8 @@ namespace Assignment3
 
         public Category GetCategory(int cid)
         {
-            throw new NotImplementedException();
+            Category category = _categoryList.Find((c) => c.Id == cid);
+            return category;
         }
 
         public bool UpdateCategory(int id, string newName)
