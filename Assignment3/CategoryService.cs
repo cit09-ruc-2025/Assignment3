@@ -17,7 +17,10 @@ namespace Assignment3
 
         public bool CreateCategory(int id, string name)
         {
-
+            if (_categoryList.Any((c) => c.Id == id))
+            {
+                return false;
+            }
             _categoryList.Add(new Category(id, name));
             return true;
         }

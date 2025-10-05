@@ -300,31 +300,31 @@ public class PartITests
         Assert.False(result);
     }
 
-    //    [Fact]
-    //    public void CategoryService_CreateCategory_ShouldCreateSuccessfully()
-    //    {
-    //        // Arrange
-    //        var categoryService = new CategoryService();
-    //        // Act
-    //        var result = categoryService.CreateCategory(4, "NewCategory");
-    //        var newCategory = categoryService.GetCategory(4);
-    //        // Assert
-    //        Assert.True(result);
-    //        Assert.NotNull(newCategory);
-    //        Assert.Equal(4, newCategory.Id);
-    //        Assert.Equal("NewCategory", newCategory.Name);
-    //    }
+    [Fact]
+    public void CategoryService_CreateCategory_ShouldCreateSuccessfully()
+    {
+        // Arrange
+        var categoryService = new CategoryService();
+        // Act
+        var result = categoryService.CreateCategory(4, "NewCategory");
+        var newCategory = categoryService.GetCategory(4);
+        // Assert
+        Assert.True(result);
+        Assert.NotNull(newCategory);
+        Assert.Equal(4, newCategory.Id);
+        Assert.Equal("NewCategory", newCategory.Name);
+    }
 
-    //    [Fact]
-    //    public void CategoryService_CreateCategory_DuplicateId()
-    //    {
-    //        // Arrange
-    //        var categoryService = new CategoryService();
-    //        // Act
-    //        var result = categoryService.CreateCategory(1, "DuplicateCategory");
-    //        // Assert
-    //        Assert.False(result);
-    //    }
+    [Fact]
+    public void CategoryService_CreateCategory_DuplicateId()
+    {
+        // Arrange
+        var categoryService = new CategoryService();
+        // Act
+        var result = categoryService.CreateCategory(1, "DuplicateCategory");
+        // Assert
+        Assert.False(result);
+    }
 
 }
 
