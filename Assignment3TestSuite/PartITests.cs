@@ -240,16 +240,16 @@ public class PartITests
         Assert.Equal("Condiments", category.Name);
     }
 
-    //    [Fact]
-    //    public void CategoryService_GetCategoryById_NonExistent()
-    //    {
-    //        // Arrange
-    //        var categoryService = new CategoryService();
-    //        // Act
-    //        var category = categoryService.GetCategory(-1);
-    //        // Assert
-    //        Assert.Null(category);
-    //    }
+    [Fact]
+    public void CategoryService_GetCategoryById_NonExistent()
+    {
+        // Arrange
+        var categoryService = new CategoryService();
+        // Act
+        var category = categoryService.GetCategory(-1);
+        // Assert
+        Assert.Null(category);
+    }
 
     //    [Fact]
     //    public void CategoryService_UpdateCategory_ShouldUpdateSuccessfully()
