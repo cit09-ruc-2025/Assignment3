@@ -24,6 +24,9 @@ namespace Assignment3
             {
                 return new Response { Status = "illegal method" };
             }
+            if (string.IsNullOrEmpty(request.Path?.Trim())) {
+                return new Response { Status = "missing path" };
+            }
             return new Response { };
         }
 

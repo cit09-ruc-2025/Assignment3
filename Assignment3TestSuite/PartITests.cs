@@ -81,22 +81,22 @@ public class PartITests
         Assert.Contains("illegal method", result.Status);
     }
 
-    //    [Fact]
-    //    public void RequestValidator_NoPath_ShouldReturnMissingPath()
-    //    {
-    //        // Arrange
-    //        var requestValidator = new RequestValidator();
-    //        var request = new Request
-    //        {
-    //            Method = "read",
-    //            Path = "",
-    //            Date = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()
-    //        };
-    //        // Act
-    //        var result = requestValidator.ValidateRequest(request);
-    //        // Assert
-    //        Assert.Contains("missing path", result.Status);
-    //    }
+       [Fact]
+       public void RequestValidator_NoPath_ShouldReturnMissingPath()
+       {
+           // Arrange
+           var requestValidator = new RequestValidator();
+           var request = new Request
+           {
+               Method = "read",
+               Path = "",
+               Date = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()
+           };
+           // Act
+           var result = requestValidator.ValidateRequest(request);
+           // Assert
+           Assert.Contains("missing path", result.Status);
+       }
 
     //    [Fact]
     //    public void RequestValidator_NoDate_ShouldReturnMissingDate()
