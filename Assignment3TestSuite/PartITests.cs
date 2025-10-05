@@ -265,16 +265,16 @@ public class PartITests
         Assert.Equal("UpdatedName", updatedCategory.Name);
     }
 
-    //    [Fact]
-    //    public void CategoryService_UpdateCategory_NonExistent()
-    //    {
-    //        // Arrange
-    //        var categoryService = new CategoryService();
-    //        // Act
-    //        var result = categoryService.UpdateCategory(-1, "UpdatedName");
-    //        // Assert
-    //        Assert.False(result);
-    //    }
+    [Fact]
+    public void CategoryService_UpdateCategory_NonExistent()
+    {
+        // Arrange
+        var categoryService = new CategoryService();
+        // Act
+        var result = categoryService.UpdateCategory(-1, "UpdatedName");
+        // Assert
+        Assert.False(result);
+    }
 
     //    [Fact]
     //    public void CategoryService_DeleteCategory_ShouldDeleteSuccessfully()
