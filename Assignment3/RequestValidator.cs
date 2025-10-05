@@ -19,7 +19,7 @@ namespace Assignment3
 
             }
 
-            string[] validMethods = { "create", "read", "echo", "delete", "echo" };
+            string[] validMethods = { "create", "read", "update", "delete", "echo" };
 
             if (!validMethods.Contains(request.Method.ToLower()))
             {
@@ -41,6 +41,14 @@ namespace Assignment3
                 return new Response { Status = "illegal date" };
 
             }
+
+            string[] withBody = { "create", "update", "echo" };
+
+            if (withBody.Contains(request.Method) && string.IsNullOrWhiteSpace(request.Body))
+            {
+                return new Response { Status = "missing body" };
+            }
+
 
             return new Response { };
         }
