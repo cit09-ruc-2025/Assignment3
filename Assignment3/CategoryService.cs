@@ -40,7 +40,17 @@ namespace Assignment3
 
         public bool UpdateCategory(int id, string newName)
         {
-            throw new NotImplementedException();
+            Category category = _categoryList.Find((c) => c.Id == id);
+
+            if (category == null)
+            {
+                return false;
+            }
+
+            category.Name = newName;
+
+            return true;
+
         }
     }
 }

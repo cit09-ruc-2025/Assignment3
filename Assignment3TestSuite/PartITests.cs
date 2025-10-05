@@ -251,19 +251,19 @@ public class PartITests
         Assert.Null(category);
     }
 
-    //    [Fact]
-    //    public void CategoryService_UpdateCategory_ShouldUpdateSuccessfully()
-    //    {
-    //        // Arrange
-    //        var categoryService = new CategoryService();
-    //        // Act
-    //        var result = categoryService.UpdateCategory(1, "UpdatedName");
-    //        var updatedCategory = categoryService.GetCategory(1);
-    //        // Assert
-    //        Assert.True(result);
-    //        Assert.NotNull(updatedCategory);
-    //        Assert.Equal("UpdatedName", updatedCategory.Name);
-    //    }
+    [Fact]
+    public void CategoryService_UpdateCategory_ShouldUpdateSuccessfully()
+    {
+        // Arrange
+        var categoryService = new CategoryService();
+        // Act
+        var result = categoryService.UpdateCategory(1, "UpdatedName");
+        var updatedCategory = categoryService.GetCategory(1);
+        // Assert
+        Assert.True(result);
+        Assert.NotNull(updatedCategory);
+        Assert.Equal("UpdatedName", updatedCategory.Name);
+    }
 
     //    [Fact]
     //    public void CategoryService_UpdateCategory_NonExistent()
