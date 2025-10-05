@@ -151,25 +151,25 @@ public class PartITests
         Assert.Contains("missing body", result.Status);
     }
 
-    //    [Theory]
-    //    [InlineData("create", "{\"id\":1,\"name\":\"xxx\"}")]
-    //    [InlineData("update", "{\"id\":1,\"name\":\"xxx\"}")]
-    //    public void RequestValidator_JasonBody_ShouldReturnOk(string method, string body)
-    //    {
-    //        // Arrange
-    //        var requestValidator = new RequestValidator();
-    //        var request = new Request
-    //        {
-    //            Method = method,
-    //            Path = "/api/xxx",
-    //            Date = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(),
-    //            Body = body
-    //        };
-    //        // Act
-    //        var result = requestValidator.ValidateRequest(request);
-    //        // Assert
-    //        Assert.Equal("1 Ok", result.Status);
-    //    }
+    [Theory]
+    [InlineData("create", "{\"id\":1,\"name\":\"xxx\"}")]
+    [InlineData("update", "{\"id\":1,\"name\":\"xxx\"}")]
+    public void RequestValidator_JasonBody_ShouldReturnOk(string method, string body)
+    {
+        // Arrange
+        var requestValidator = new RequestValidator();
+        var request = new Request
+        {
+            Method = method,
+            Path = "/api/xxx",
+            Date = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(),
+            Body = body
+        };
+        // Act
+        var result = requestValidator.ValidateRequest(request);
+        // Assert
+        Assert.Equal("1 Ok", result.Status);
+    }
 
     //    [Theory]
     //    [InlineData("create", "xxx")]
