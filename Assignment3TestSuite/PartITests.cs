@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit;
 using Assignment3;
-using Assignment3.Models;
+using Utils.Models;
 using Assignment3.Utils;
 
 namespace Assignment3TestSuite;

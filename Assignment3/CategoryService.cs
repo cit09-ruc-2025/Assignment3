@@ -1,5 +1,5 @@
 ﻿using Assignment3.Interfaces;
-using Assignment3.Models;
+using Utils.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +11,13 @@ namespace Assignment3
     public class CategoryService : ICategoryService
     {
         private readonly List<Category> _repository = [new Category() { Id = 1, Name = "Beverages" }, new Category() { Id = 2, Name = "Condiments" }, new Category() { Id = 3, Name = "Confections" }];
+        private int _nextId = 4;
 
         public bool CreateCategory(int id, string name)
         {
             if (_repository.Any(c => c.Id == id)) return false;
+
+            if (id == -1) id = _nextId++;
 
             _repository.Add(new Category() { Id = id, Name = name });
             return true;

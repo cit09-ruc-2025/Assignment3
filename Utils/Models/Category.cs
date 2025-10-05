@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Assignment3.Models
+namespace Utils.Models
 {
     public class Category
     {
-        [JsonPropertyName("cId")]
+        [JsonPropertyName("cid")]
         public int Id { get; set; }
         [JsonPropertyName("name")]
         public string Name { get; set; }

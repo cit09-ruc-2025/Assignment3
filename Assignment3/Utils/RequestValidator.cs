@@ -1,4 +1,4 @@
-﻿using Assignment3.Models;
+﻿using Utils.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Utils;
 
 namespace Assignment3.Utils
 {
@@ -19,6 +20,13 @@ namespace Assignment3.Utils
                 "delete",
                 "echo"
             };
+        public UrlParser UrlParser { get; set; }
+
+        public RequestValidator()
+        {
+            UrlParser = new UrlParser();
+        }
+
         public Response ValidateRequest(Request request)
         {
             var errorList = new List<string>();
@@ -51,12 +59,9 @@ namespace Assignment3.Utils
         #region Path Validation
         private void ValidatePath(Request request, ref List<string> errorList)
         {
-            var urlParser = new UrlParser();
-            var validControllers = new List<string>() { "categories", "testing" };
             if (string.IsNullOrWhiteSpace(request.Path)) { errorList.Add("missing path"); return; }
-            if (!urlParser.ParseUrl(request.Path) || !validControllers.Any(c => request.Path.ToLower().Contains(c.ToLower())) && request.Method != "echo") errorList.Add("illegal path");
-            if (urlParser.HasId && urlParser.Id == null) errorList.Add("invalid path id");
-            if (request.Method == "create" && urlParser.HasId) errorList.Add("invalid create request");
+            if (UrlParser.HasId && UrlParser.Id == null) errorList.Add("invalid path id");
+            if (request.Method == "create" && UrlParser.HasId) errorList.Add("invalid create request");
         }
         #endregion
 
@@ -101,13 +106,21 @@ namespace Assignment3.Utils
 
         private void CheckForInvalidRequests(Request request, ref List<string> errorList)
         {
-            var urlParser = new UrlParser();
-            urlParser.ParseUrl(request.Path);
-            var isBadRequest = (request.Method == "read" && urlParser.HasId && urlParser.Id == null 
-                || request.Method == "create" && urlParser.HasId)
-                || (request.Method == "delete" && !urlParser.HasId) 
-                || (request.Method == "update" && !urlParser.HasId);
+            UrlParser.ParseUrl(request.Path);
+            var body = request.Body.ToObj<CategoryDTO>();
+            var hasId = UrlParser.HasId || (body != null && body.Id != 0);
+
+            var isBadRequest = (request.Method == "read" && UrlParser.HasId && UrlParser.Id == null 
+                || request.Method == "create" && UrlParser.HasId )
+                || (request.Method == "delete" && !hasId) 
+                || (request.Method == "update" && !hasId);
             if (isBadRequest) errorList.Add("bad request");
+        }
+
+        private class CategoryDTO
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
         }
     }
 }

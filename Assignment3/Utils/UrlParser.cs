@@ -10,12 +10,13 @@ namespace Assignment3.Utils
     {
         public bool HasId { get; set; }
         public string Id { get; set; }
-        public string Path { get; set; }
+        public string Path { get; set; } = string.Empty;
         public bool ParseUrl(string url)
         {
             if (url == "testing")
             {
                 HasId = false;
+                Path = url;
                 return true;
             }
 

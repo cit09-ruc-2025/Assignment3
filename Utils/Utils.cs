@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Utils.Models;
 
 namespace Utils
 {
@@ -24,7 +26,20 @@ namespace Utils
 
         public static string ToJson(this object obj)
         {
-            return JsonSerializer.Serialize(obj, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
+            return JsonSerializer.Serialize(obj, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        }
+
+        public static T? ToObj<T>(this string requestBody)
+        {
+            try
+            {
+                var utf8Bytes = System.Text.Encoding.UTF8.GetBytes(requestBody);
+                return JsonSerializer.Deserialize<T>(utf8Bytes, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase,  });
+            }
+            catch (Exception)
+            {
+                return default;
+            }
         }
     }
 }

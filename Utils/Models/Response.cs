@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assignment3.Models
+namespace Utils.Models
 {
     public class Response
     {
