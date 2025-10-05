@@ -276,29 +276,29 @@ public class PartITests
         Assert.False(result);
     }
 
-    //    [Fact]
-    //    public void CategoryService_DeleteCategory_ShouldDeleteSuccessfully()
-    //    {
-    //        // Arrange
-    //        var categoryService = new CategoryService();
-    //        // Act
-    //        var result = categoryService.DeleteCategory(3);
-    //        var deletedCategory = categoryService.GetCategory(3);
-    //        // Assert
-    //        Assert.True(result);
-    //        Assert.Null(deletedCategory);
-    //    }
+    [Fact]
+    public void CategoryService_DeleteCategory_ShouldDeleteSuccessfully()
+    {
+        // Arrange
+        var categoryService = new CategoryService();
+        // Act
+        var result = categoryService.DeleteCategory(3);
+        var deletedCategory = categoryService.GetCategory(3);
+        // Assert
+        Assert.True(result);
+        Assert.Null(deletedCategory);
+    }
 
-    //    [Fact]
-    //    public void CategoryService_DeleteCategory_NonExistent()
-    //    {
-    //        // Arrange
-    //        var categoryService = new CategoryService();
-    //        // Act
-    //        var result = categoryService.DeleteCategory(-1);
-    //        // Assert
-    //        Assert.False(result);
-    //    }
+    [Fact]
+    public void CategoryService_DeleteCategory_NonExistent()
+    {
+        // Arrange
+        var categoryService = new CategoryService();
+        // Act
+        var result = categoryService.DeleteCategory(-1);
+        // Assert
+        Assert.False(result);
+    }
 
     //    [Fact]
     //    public void CategoryService_CreateCategory_ShouldCreateSuccessfully()

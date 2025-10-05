@@ -24,7 +24,8 @@ namespace Assignment3
 
         public bool DeleteCategory(int id)
         {
-            throw new NotImplementedException();
+            int category = _categoryList.RemoveAll((c) => c.Id == id);
+            return category > 0;
         }
 
         public List<Category> GetCategories()
