@@ -192,22 +192,22 @@ public class PartITests
     }
 
 
-    //    [Fact]
-    //    public void RequestValidator_ValidGetRequest_ShouldReturnTrue()
-    //    {
-    //        // Arrange
-    //        var requestValidator = new RequestValidator();
-    //        var request = new Request
-    //        {
-    //            Method = "read",
-    //            Path = "/api/categories/1",
-    //            Date = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()
-    //        };
-    //        // Act
-    //        var result = requestValidator.ValidateRequest(request);
-    //        // Assert
-    //        Assert.Equal("1 Ok", result.Status);
-    //    }
+    [Fact]
+    public void RequestValidator_ValidGetRequest_ShouldReturnTrue()
+    {
+        // Arrange
+        var requestValidator = new RequestValidator();
+        var request = new Request
+        {
+            Method = "read",
+            Path = "/api/categories/1",
+            Date = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()
+        };
+        // Act
+        var result = requestValidator.ValidateRequest(request);
+        // Assert
+        Assert.Equal("1 Ok", result.Status);
+    }
 
 
 

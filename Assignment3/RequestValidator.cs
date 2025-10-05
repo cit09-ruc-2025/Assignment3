@@ -44,26 +44,27 @@ namespace Assignment3
 
             string[] withBody = { "create", "update", "echo" };
 
-            if (withBody.Contains(request.Method) && string.IsNullOrWhiteSpace(request.Body))
+            if (withBody.Contains(request.Method.ToLower()))
             {
-                return new Response { Status = "missing body" };
+                if (string.IsNullOrWhiteSpace(request.Body))
+                {
+                    return new Response { Status = "missing body" };
+
+                }
+
+                try
+                {
+                    JsonDocument.Parse(request.Body);
+                    return new Response { Status = "1 Ok" };
+
+                }
+                catch (JsonException)
+                {
+                    return new Response { Status = "illegal body" };
+                }
             }
 
-            try
-            {
-                JsonDocument.Parse(request.Body);
-                return new Response { Status = "1 Ok" };
-
-            }
-            catch (JsonException)
-            {
-                return new Response { Status = "illegal body" };
-            }
-
-
+            return new Response { Status = "1 Ok" };
         }
-
-
     }
-
 }
