@@ -171,25 +171,25 @@ public class PartITests
         Assert.Equal("1 Ok", result.Status);
     }
 
-    //    [Theory]
-    //    [InlineData("create", "xxx")]
-    //    [InlineData("update", "xxx")]
-    //    public void RequestValidator_NoJasonBody_ShouldReturnIllegalBody(string method, string body)
-    //    {
-    //        // Arrange
-    //        var requestValidator = new RequestValidator();
-    //        var request = new Request
-    //        {
-    //            Method = method,
-    //            Path = "/api/xxx",
-    //            Date = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(),
-    //            Body = body
-    //        };
-    //        // Act
-    //        var result = requestValidator.ValidateRequest(request);
-    //        // Assert
-    //        Assert.Contains("illegal body", result.Status);
-    //    }
+    [Theory]
+    [InlineData("create", "xxx")]
+    [InlineData("update", "xxx")]
+    public void RequestValidator_NoJasonBody_ShouldReturnIllegalBody(string method, string body)
+    {
+        // Arrange
+        var requestValidator = new RequestValidator();
+        var request = new Request
+        {
+            Method = method,
+            Path = "/api/xxx",
+            Date = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(),
+            Body = body
+        };
+        // Act
+        var result = requestValidator.ValidateRequest(request);
+        // Assert
+        Assert.Contains("illegal body", result.Status);
+    }
 
 
     //    [Fact]

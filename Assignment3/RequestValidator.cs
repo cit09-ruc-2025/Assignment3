@@ -49,8 +49,18 @@ namespace Assignment3
                 return new Response { Status = "missing body" };
             }
 
+            try
+            {
+                JsonDocument.Parse(request.Body);
+                return new Response { Status = "1 Ok" };
 
-            return new Response { Status = "1 Ok" };
+            }
+            catch (JsonException)
+            {
+                return new Response { Status = "illegal body" };
+            }
+
+
         }
 
 
