@@ -98,21 +98,21 @@ public class PartITests
            Assert.Contains("missing path", result.Status);
        }
 
-    //    [Fact]
-    //    public void RequestValidator_NoDate_ShouldReturnMissingDate()
-    //    {
-    //        // Arrange
-    //        var requestValidator = new RequestValidator();
-    //        var request = new Request
-    //        {
-    //            Method = "read",
-    //            Path = "/api/xxx",
-    //        };
-    //        // Act
-    //        var result = requestValidator.ValidateRequest(request);
-    //        // Assert
-    //        Assert.Contains("missing date", result.Status);
-    //    }
+       [Fact]
+       public void RequestValidator_NoDate_ShouldReturnMissingDate()
+       {
+           // Arrange
+           var requestValidator = new RequestValidator();
+           var request = new Request
+           {
+               Method = "read",
+               Path = "/api/xxx",
+           };
+           // Act
+           var result = requestValidator.ValidateRequest(request);
+           // Assert
+           Assert.Contains("missing date", result.Status);
+       }
 
     //    [Fact]
     //    public void RequestValidator_InvalidDate_ShouldReturnIllegalDate()
