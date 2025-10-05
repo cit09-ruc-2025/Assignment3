@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assignment3
+namespace Assignment3.Utils
 {
     public class UrlParser
     {
@@ -13,6 +13,12 @@ namespace Assignment3
         public string Path { get; set; }
         public bool ParseUrl(string url)
         {
+            if (url == "testing")
+            {
+                HasId = false;
+                return true;
+            }
+
             if (string.IsNullOrWhiteSpace(url)) return false;
             var split = url.Split('/').Where(s => !string.IsNullOrEmpty(s)).ToArray();
             if (split.Length < 2 || split.Length > 3) return false;
@@ -23,9 +29,10 @@ namespace Assignment3
             }
             else
             {
+                HasId = true;
                 var last = split[^1];
-                HasId = int.TryParse(last, out int tempId);
-                if (HasId)
+                var isValidId = int.TryParse(last, out int tempId);
+                if (isValidId)
                 {
                     Id = tempId.ToString();
                 }

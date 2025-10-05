@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assignment3.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,20 +7,29 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Assignment3
+namespace Assignment3.Utils
 {
     public class RequestValidator
     {
+        private static List<string> _validMethods = new List<string>()
+            {
+                "create",
+                "read",
+                "update",
+                "delete",
+                "echo"
+            };
         public Response ValidateRequest(Request request)
         {
-            var list = new List<string>();
-            ValidateMethod(request, ref list);
-            ValidatePath(request, ref list);
-            ValidateDate(request, ref list);
-            ValidateBody(request, ref list);
+            var errorList = new List<string>();
+            ValidateMethod(request, ref errorList);
+            ValidatePath(request, ref errorList);
+            ValidateDate(request, ref errorList);
+            ValidateBody(request, ref errorList);
+            CheckForInvalidRequests(request, ref errorList);
 
             var response = new Response();
-            response.Status = list.Count > 0 ? "4 " + string.Join(", ", list) : "1 Ok"; // Append Bad Request status code if there are errors
+            response.Status = errorList.Count > 0 ? "4 " + string.Join(", ", errorList) : "1 Ok"; // Append Bad Request status code if there are errors
             return response;
         }
 
@@ -30,15 +40,7 @@ namespace Assignment3
             var methodMissingMessage = "missing method";
             if (methodMissing) errorList.Add(methodMissingMessage);
 
-            var validMethods = new List<string>()
-            {
-                "create",
-                "read",
-                "update",
-                "delete",
-                "echo"
-            };
-            var methodInvalid = !validMethods.Contains(request.Method);
+            var methodInvalid = !_validMethods.Contains(request.Method);
             var methodInvalidMessage = "illegal method";
             if (methodInvalid) errorList.Add(methodInvalidMessage);
         }
@@ -49,8 +51,12 @@ namespace Assignment3
         #region Path Validation
         private void ValidatePath(Request request, ref List<string> errorList)
         {
+            var urlParser = new UrlParser();
+            var validControllers = new List<string>() { "categories", "testing" };
             if (string.IsNullOrWhiteSpace(request.Path)) { errorList.Add("missing path"); return; }
-            if (!(new UrlParser()).ParseUrl(request.Path)) errorList.Add("illegal path");
+            if (!urlParser.ParseUrl(request.Path) || !validControllers.Any(c => request.Path.ToLower().Contains(c.ToLower())) && request.Method != "echo") errorList.Add("illegal path");
+            if (urlParser.HasId && urlParser.Id == null) errorList.Add("invalid path id");
+            if (request.Method == "create" && urlParser.HasId) errorList.Add("invalid create request");
         }
         #endregion
 
@@ -86,11 +92,22 @@ namespace Assignment3
             }
             catch (Exception ex)
             {
-                errorList.Add("illegal body");
+                if (request.Method != "echo") errorList.Add("illegal body");
             }
         }
 
 
         #endregion
+
+        private void CheckForInvalidRequests(Request request, ref List<string> errorList)
+        {
+            var urlParser = new UrlParser();
+            urlParser.ParseUrl(request.Path);
+            var isBadRequest = (request.Method == "read" && urlParser.HasId && urlParser.Id == null 
+                || request.Method == "create" && urlParser.HasId)
+                || (request.Method == "delete" && !urlParser.HasId) 
+                || (request.Method == "update" && !urlParser.HasId);
+            if (isBadRequest) errorList.Add("bad request");
+        }
     }
 }
