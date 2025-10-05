@@ -209,29 +209,23 @@ public class PartITests
         Assert.Equal("1 Ok", result.Status);
     }
 
+    //////////////////////////////////////////////////////////
+    /// 
+    /// Testing CategoryService class
+    /// 
+    //////////////////////////////////////////////////////////
 
-
-
-
-
-
-    //    //////////////////////////////////////////////////////////
-    //    /// 
-    //    /// Testing CategoryService class
-    //    /// 
-    //    //////////////////////////////////////////////////////////
-
-    //    [Fact]
-    //    public void CategoryService_GetAllCategories_ShouldReturnAllCategories()
-    //    {
-    //        // Arrange
-    //        var categoryService = new CategoryService();
-    //        // Act
-    //        var categories = categoryService.GetCategories();
-    //        // Assert
-    //        Assert.NotNull(categories);
-    //        Assert.Equal(3, categories.Count);
-    //    }
+    [Fact]
+    public void CategoryService_GetAllCategories_ShouldReturnAllCategories()
+    {
+        // Arrange
+        var categoryService = new CategoryService();
+        // Act
+        var categories = categoryService.GetCategories();
+        // Assert
+        Assert.NotNull(categories);
+        Assert.Equal(3, categories.Count);
+    }
 
     //    [Fact]
     //    public void CategoryService_GetCategoryById_ShouldReturnCorrectCategory()

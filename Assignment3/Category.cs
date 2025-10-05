@@ -14,5 +14,11 @@ namespace Assignment3
         public int Id { get; set; }
         [JsonPropertyName("name")]
         public string Name { get; set; }
+
+        public Category(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
     }
 }

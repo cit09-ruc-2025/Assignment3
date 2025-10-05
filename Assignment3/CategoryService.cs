@@ -9,9 +9,17 @@ namespace Assignment3
 {
     public class CategoryService : ICategoryService
     {
+        private List<Category> _categoryList = new List<Category> {
+            new Category(1, "Beverages"),
+            new Category(2, "Condiments"),
+            new Category(3, "Confections")
+        };
+
         public bool CreateCategory(int id, string name)
         {
-            throw new NotImplementedException();
+
+            _categoryList.Add(new Category(id, name));
+            return true;
         }
 
         public bool DeleteCategory(int id)
@@ -21,7 +29,7 @@ namespace Assignment3
 
         public List<Category> GetCategories()
         {
-            throw new NotImplementedException();
+            return _categoryList;
         }
 
         public Category GetCategory(int cid)
