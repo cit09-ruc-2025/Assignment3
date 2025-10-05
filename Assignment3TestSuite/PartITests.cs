@@ -114,22 +114,22 @@ public class PartITests
            Assert.Contains("missing date", result.Status);
        }
 
-    //    [Fact]
-    //    public void RequestValidator_InvalidDate_ShouldReturnIllegalDate()
-    //    {
-    //        // Arrange
-    //        var requestValidator = new RequestValidator();
-    //        var request = new Request
-    //        {
-    //            Method = "read",
-    //            Path = "/api/xxx",
-    //            Date = DateTime.Now.ToString()
-    //        };
-    //        // Act
-    //        var result = requestValidator.ValidateRequest(request);
-    //        // Assert
-    //        Assert.Contains("illegal date", result.Status);
-    //    }
+       [Fact]
+       public void RequestValidator_InvalidDate_ShouldReturnIllegalDate()
+       {
+           // Arrange
+           var requestValidator = new RequestValidator();
+           var request = new Request
+           {
+               Method = "read",
+               Path = "/api/xxx",
+               Date = DateTime.Now.ToString()
+           };
+           // Act
+           var result = requestValidator.ValidateRequest(request);
+           // Assert
+           Assert.Contains("illegal date", result.Status);
+       }
 
     //    [Theory]
     //    [InlineData("create")]

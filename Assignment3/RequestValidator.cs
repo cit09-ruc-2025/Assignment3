@@ -30,10 +30,16 @@ namespace Assignment3
             {
                 return new Response { Status = "missing path" };
             }
-            
+
             if (string.IsNullOrEmpty(request.Date?.Trim()))
             {
                 return new Response { Status = "missing date" };
+            }
+
+            if (!long.TryParse(request.Date, out long _))
+            {
+                return new Response { Status = "illegal date" };
+
             }
 
             return new Response { };
@@ -41,5 +47,5 @@ namespace Assignment3
 
 
     }
-    
+
 }
