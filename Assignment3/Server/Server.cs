@@ -71,7 +71,7 @@ namespace Assignment3.Server
                 RequestValidator validator = new RequestValidator();
 
                 response = validator.ValidateRequest(request);
-                Console.WriteLine(response.Status + response.Success);
+
                 if (response.Success)
                 {
 
@@ -117,11 +117,7 @@ namespace Assignment3.Server
             switch (request.Method.ToLower())
             {
                 case "echo":
-                    {
-                        Console.WriteLine("here");
-
-                        return new Response { Body = request.Body };
-                    }
+                    return new Response { Body = request.Body };
 
                 case "read":
                     return HandleRead(request);
@@ -144,7 +140,11 @@ namespace Assignment3.Server
         private Response HandleRead(Request request)
         {
             var urlParser = new UrlParser();
-            urlParser.ParseUrl(request.Path);
+            var parsed = urlParser.ParseUrl(request.Path);
+            if (!parsed)
+            {
+                return new Response { Status = "4 Bad Request" };
+            }
             if (urlParser.HasId)
             {
                 var category = _categoryService.GetCategory(int.Parse(urlParser.Id));
