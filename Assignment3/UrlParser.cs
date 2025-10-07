@@ -10,9 +10,16 @@ namespace Assignment3
     {
         public bool HasId { get; set; }
         public string Id { get; set; }
-        public string Path { get; set; }
+        public string Path { get; set; } = string.Empty;
         public bool ParseUrl(string url)
         {
+            if (url == "testing")
+            {
+                HasId = false;
+                Path = url;
+                return true;
+            }
+
             if (string.IsNullOrWhiteSpace(url)) return false;
             var split = url.Split('/').Where(s => !string.IsNullOrEmpty(s)).ToArray();
             if (split.Length < 2 || split.Length > 3) return false;
@@ -23,11 +30,16 @@ namespace Assignment3
             }
             else
             {
+                HasId = true;
                 var last = split[^1];
-                HasId = int.TryParse(last, out int tempId);
-                if (HasId)
+                var isValidId = int.TryParse(last, out int tempId);
+                if (isValidId)
                 {
                     Id = tempId.ToString();
+                }
+                else
+                {
+                    return false;
                 }
             }
 

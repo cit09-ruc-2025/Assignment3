@@ -10,87 +10,75 @@ namespace Assignment3
 {
     public class RequestValidator
     {
+
         public Response ValidateRequest(Request request)
         {
-            var list = new List<string>();
-            ValidateMethod(request, ref list);
-            ValidatePath(request, ref list);
-            ValidateDate(request, ref list);
-            ValidateBody(request, ref list);
+            var errorList = new List<string>();
+            var success = true;
 
-            var response = new Response();
-            response.Status = list.Count > 0 ? "4 " + string.Join(", ", list) : "1 Ok"; // Append Bad Request status code if there are errors
-            return response;
-        }
-
-        #region Method Validation
-        private void ValidateMethod(Request request, ref List<string> errorList)
-        {
-            var methodMissing = string.IsNullOrWhiteSpace(request.Method);
-            var methodMissingMessage = "missing method";
-            if (methodMissing) errorList.Add(methodMissingMessage);
-
-            var validMethods = new List<string>()
+            if (string.IsNullOrEmpty(request.Method?.Trim()))
             {
-                "create",
-                "read",
-                "update",
-                "delete",
-                "echo"
-            };
-            var methodInvalid = !validMethods.Contains(request.Method);
-            var methodInvalidMessage = "illegal method";
-            if (methodInvalid) errorList.Add(methodInvalidMessage);
-        }
+                errorList.Add("missing method");
+                success = false;
 
+            }
 
-        #endregion
+            string[] validMethods = { "create", "read", "update", "delete", "echo" };
 
-        #region Path Validation
-        private void ValidatePath(Request request, ref List<string> errorList)
-        {
-            if (string.IsNullOrWhiteSpace(request.Path)) { errorList.Add("missing path"); return; }
-            if (!(new UrlParser()).ParseUrl(request.Path)) errorList.Add("illegal path");
-        }
-        #endregion
+            if (!validMethods.Contains(request.Method?.ToLower()))
+            {
+                errorList.Add("illegal method");
+                success = false;
+            }
 
-        #region Date Validation
-        private void ValidateDate(Request request, ref List<string> errorList)
-        {
-            if (string.IsNullOrWhiteSpace(request.Date))
+            if (request.Method != "echo" && string.IsNullOrEmpty(request.Path?.Trim()))
+            {
+                errorList.Add("missing path");
+                success = false;
+            }
+
+            if (string.IsNullOrEmpty(request.Date?.Trim()))
             {
                 errorList.Add("missing date");
-                return;
+                success = false;
             }
 
-            var parseSuccess = long.TryParse(request.Date, out long _);
-            if (!parseSuccess) errorList.Add("illegal date");
+            if (!long.TryParse(request.Date, out long _))
+            {
+                errorList.Add("illegal date");
+                success = false;
+
+            }
+
+            string[] withBody = { "create", "update", "echo" };
+
+            if (withBody.Contains(request.Method?.ToLower()))
+            {
+                if (string.IsNullOrWhiteSpace(request.Body))
+                {
+                    errorList.Add("missing body");
+                    success = false;
+
+                }
+
+                if (request.Method != "echo")
+                {
+                    try
+                    {
+                        JsonDocument.Parse(request.Body);
+
+                    }
+                    catch (Exception)
+                    {
+                        errorList.Add("illegal body");
+                        success = false;
+                    }
+                }
+            }
+
+            if (success) return new Response { Status = "1 Ok", Success = true };
+
+            return new Response { Status = "4 " + string.Join("; ", errorList), Success = false };
         }
-        #endregion
-
-        #region Body Validation
-        private void ValidateBody(Request request, ref List<string> errorList)
-        {
-            var requiresBody = new List<string>() { "update", "create", "echo" };
-            if (!requiresBody.Contains(request.Method)) return;
-
-            if (string.IsNullOrWhiteSpace(request.Body))
-            {
-                errorList.Add("missing body");
-                return;
-            }
-
-            try
-            {
-                var parse = JsonSerializer.Deserialize<object>(request.Body);
-            }
-            catch (Exception ex)
-            {
-                errorList.Add("illegal body");
-            }
-        }
-
-
-        #endregion
     }
 }
