@@ -121,6 +121,21 @@ public class EchoServer
           }
         }
 
+      case "update":
+        {
+          var urlParser = new UrlParser();
+          var parsed = urlParser.ParseUrl(request.Path);
+
+          if (!urlParser.HasId && !parsed)
+          {
+            return new Response { Status = "4 Bad Request" };
+          }
+          else
+          {
+            return new Response { Body = string.Empty };
+          }
+        }
+
 
       default:
         return new Response { Body = string.Empty };

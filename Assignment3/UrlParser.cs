@@ -11,6 +11,7 @@ namespace Assignment3
         public bool HasId { get; set; }
         public string Id { get; set; }
         public string Path { get; set; }
+
         public bool ParseUrl(string url)
         {
             if (string.IsNullOrWhiteSpace(url)) return false;
