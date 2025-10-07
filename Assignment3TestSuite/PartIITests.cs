@@ -350,23 +350,23 @@ public class PartIITests
         Assert.Equal(expectedResponse.ToJson(), response.ToJson());
     }
 
-    // [Fact]
-    // public void Request_ReadCategoryWithInvalidId_ShouldReturnNotFound()
-    // {
-    //     var client = Connect();
+    [Fact]
+    public void Request_ReadCategoryWithInvalidId_ShouldReturnNotFound()
+    {
+        var client = Connect();
 
-    //     var request = new
-    //     {
-    //         Method = "read",
-    //         Path = "/api/categories/123",
-    //         Date = UnixTimestamp()
-    //     };
+        var request = new
+        {
+            Method = "read",
+            Path = "/api/categories/123",
+            Date = UnixTimestamp()
+        };
 
-    //     client.SendRequest(request.ToJson());
-    //     var response = client.ReadResponse();
+        client.SendRequest(request.ToJson());
+        var response = client.ReadResponse();
 
-    //     Assert.Contains("5 not found", response.Status.ToLower());
-    // }
+        Assert.Contains("5 not found", response.Status.ToLower());
+    }
 
 
     // /* Update tests  */

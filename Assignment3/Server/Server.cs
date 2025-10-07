@@ -109,6 +109,15 @@ public class EchoServer
               {
 
                 var category = categoryService.GetCategory(int.Parse(urlParser.Id));
+
+                if (category == null)
+                {
+                  return new Response
+                  {
+                    Status = "5 Not Found",
+                  };
+                }
+
                 return new Response
                 {
                   Status = "1 Ok",
