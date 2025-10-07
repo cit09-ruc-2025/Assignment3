@@ -126,7 +126,22 @@ public class EchoServer
           var urlParser = new UrlParser();
           var parsed = urlParser.ParseUrl(request.Path);
 
-          if (!urlParser.HasId && !parsed)
+          if (!urlParser.HasId || !parsed)
+          {
+            return new Response { Status = "4 Bad Request" };
+          }
+          else
+          {
+            return new Response { Body = string.Empty };
+          }
+        }
+
+      case "delete":
+        {
+          var urlParser = new UrlParser();
+          var parsed = urlParser.ParseUrl(request.Path);
+
+          if (!urlParser.HasId || !parsed)
           {
             return new Response { Status = "4 Bad Request" };
           }

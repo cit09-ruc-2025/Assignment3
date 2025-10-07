@@ -273,25 +273,25 @@ public class PartIITests
         Assert.Equal(expectedResponse.ToJson().ToLower(), response.ToJson().ToLower());
     }
 
-    // [Fact]
-    // public void Constraint_DeleteWithOutPathId_ShouldReturnBadRequest()
-    // {
-    //     var client = Connect();
+    [Fact]
+    public void Constraint_DeleteWithOutPathId_ShouldReturnBadRequest()
+    {
+        var client = Connect();
 
-    //     var request = new
-    //     {
-    //         Method = "delete",
-    //         Path = "/api/categories",
-    //         Date = UnixTimestamp()
-    //     };
+        var request = new
+        {
+            Method = "delete",
+            Path = "/api/categories",
+            Date = UnixTimestamp()
+        };
 
-    //     client.SendRequest(request.ToJson());
-    //     var response = client.ReadResponse();
+        client.SendRequest(request.ToJson());
+        var response = client.ReadResponse();
 
-    //     var expectedResponse = new Response { Status = "4 Bad Request" };
+        var expectedResponse = new Response { Status = "4 Bad Request" };
 
-    //     Assert.Equal(expectedResponse.ToJson().ToLower(), response.ToJson().ToLower());
-    // }
+        Assert.Equal(expectedResponse.ToJson().ToLower(), response.ToJson().ToLower());
+    }
 
 
 
