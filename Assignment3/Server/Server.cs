@@ -16,6 +16,8 @@ namespace Assignment3.Server
 
         private TcpListener _server;
 
+        private static readonly List<string> _validControllers = ["categories", "testing"];
+
         public int Port { get; set; }
 
         private ICategoryService _categoryService = new CategoryService();
@@ -64,13 +66,39 @@ namespace Assignment3.Server
                   new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }
                 );
 
+                var response = new Response();
+
                 RequestValidator validator = new RequestValidator();
 
-                Response response = validator.ValidateRequest(request);
-
+                response = validator.ValidateRequest(request);
+                Console.WriteLine(response.Status + response.Success);
                 if (response.Success)
                 {
-                    response = HandleRequest(request);
+
+                    var requestValidController = false;
+
+                    if (request.Method != "echo")
+                    {
+                        foreach (var controller in _validControllers)
+                        {
+
+                            if (request.Path.ToLower().Contains(controller.ToLower()))
+                            {
+                                requestValidController = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!requestValidController && request.Method != "echo")
+                    {
+                        response = new Response { Status = "5 Not found" };
+                    }
+                    else
+                    {
+                        response = HandleRequest(request);
+                    }
+
                 }
 
                 var responseJson = JsonSerializer.Serialize(response,
@@ -89,7 +117,11 @@ namespace Assignment3.Server
             switch (request.Method.ToLower())
             {
                 case "echo":
-                    return new Response { Body = request.Body };
+                    {
+                        Console.WriteLine("here");
+
+                        return new Response { Body = request.Body };
+                    }
 
                 case "read":
                     return HandleRead(request);
