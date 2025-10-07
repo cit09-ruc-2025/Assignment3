@@ -127,13 +127,12 @@ namespace Assignment3.Server
         {
             var urlParser = new UrlParser();
             urlParser.ParseUrl(request.Path);
-            if (urlParser.HasId)
-            {
-                var id = int.Parse(urlParser.Id);
-                var deleted = _categoryService.DeleteCategory(id);
-                if (deleted) return new Response() { Status = "1 Ok" };
-            }
-            return new Response() { Status = "5 Not found" };
+            if (!urlParser.HasId) return new Response() { Status = "4 Bad Request" };
+
+            var id = int.Parse(urlParser.Id);
+            var deleted = _categoryService.DeleteCategory(id);
+            if (deleted) return new Response() { Status = "1 Ok" };
+            else return new Response() { Status = "5 Not found" };
         }
 
         private Response HandleCreate(Request request)
