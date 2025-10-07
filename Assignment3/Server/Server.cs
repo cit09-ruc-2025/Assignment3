@@ -169,18 +169,33 @@ public class EchoServer
             {
               var categoryService = new CategoryService();
 
+              var category = categoryService.GetCategory(int.Parse(urlParser.Id));
+
+              if (category == null)
+              {
+                return new Response
+                {
+                  Status = "5 not found",
+                };
+              }
+
               var newValue = JsonSerializer.Deserialize<Category>(request.Body, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
               var updated = categoryService.UpdateCategory(int.Parse(urlParser.Id), newValue.Name);
 
               if (updated)
               {
-                return new Response { Status = "3 updated" };
+                var updateCategory = categoryService.GetCategory(int.Parse(urlParser.Id));
+                return new Response
+                {
+                  Status = "3 updated",
+                  Body = ConvertToJsonString(updateCategory)
+                };
+
               }
 
             }
             return new Response { Body = string.Empty };
-
           }
         }
 

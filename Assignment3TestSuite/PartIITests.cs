@@ -450,24 +450,24 @@ public class PartIITests
     //     client.ReadResponse();
     // }
 
-    // [Fact]
-    // public void Request_UpdateCategoryInvalidId_ShouldReturnNotFound()
-    // {
-    //     var client = Connect();
+    [Fact]
+    public void Request_UpdateCategoryInvalidId_ShouldReturnNotFound()
+    {
+        var client = Connect();
 
-    //     var request = new
-    //     {
-    //         Method = "update",
-    //         Path = "/api/categories/123",
-    //         Date = UnixTimestamp(),
-    //         Body = (new { cid = 1, name = "BeveragesTesting" }).ToJson()
-    //     };
+        var request = new
+        {
+            Method = "update",
+            Path = "/api/categories/123",
+            Date = UnixTimestamp(),
+            Body = (new { cid = 1, name = "BeveragesTesting" }).ToJson()
+        };
 
-    //     client.SendRequest(request.ToJson());
-    //     var response = client.ReadResponse();
+        client.SendRequest(request.ToJson());
+        var response = client.ReadResponse();
 
-    //     Assert.Contains("5 not found", response.Status.ToLower());
-    // }
+        Assert.Contains("5 not found", response.Status.ToLower());
+    }
 
 
     // /* Create Tests  */
