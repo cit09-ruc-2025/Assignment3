@@ -89,7 +89,7 @@ namespace Assignment3.Server
             switch (request.Method.ToLower())
             {
                 case "echo":
-                    return new Response();
+                    return new Response { Body = request.Body };
 
                 case "read":
                     return HandleRead(request);
