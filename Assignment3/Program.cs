@@ -1,12 +1,18 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Server;
 
 namespace Assignment3
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello Web Service :-)");
+            int port = 5000;
+
+            var server = new EchoServer(port);
+
+            await server.Run();
         }
     }
 }
