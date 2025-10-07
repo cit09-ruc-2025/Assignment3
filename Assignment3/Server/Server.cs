@@ -165,7 +165,22 @@ public class EchoServer
           }
           else
           {
+            if (request.Path.Contains("categories"))
+            {
+              var categoryService = new CategoryService();
+
+              var newValue = JsonSerializer.Deserialize<Category>(request.Body, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+
+              var updated = categoryService.UpdateCategory(int.Parse(urlParser.Id), newValue.Name);
+
+              if (updated)
+              {
+                return new Response { Status = "3 updated" };
+              }
+
+            }
             return new Response { Body = string.Empty };
+
           }
         }
 

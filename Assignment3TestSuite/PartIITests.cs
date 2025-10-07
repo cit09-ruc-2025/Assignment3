@@ -368,43 +368,42 @@ public class PartIITests
         Assert.Contains("5 not found", response.Status.ToLower());
     }
 
+    /* Update tests  */
 
-    // /* Update tests  */
+    [Fact]
+    public void Request_UpdateCategoryWithValidIdAndBody_ShouldReturnUpdated()
+    {
+        var client = Connect();
 
-    // [Fact]
-    // public void Request_UpdateCategoryWithValidIdAndBody_ShouldReturnUpdated()
-    // {
-    //     var client = Connect();
+        var request = new
+        {
+            Method = "update",
+            Path = "/api/categories/1",
+            Date = UnixTimestamp(),
+            Body = (new { cid = 1, name = "BeveragesTesting" }).ToJson()
+        };
 
-    //     var request = new
-    //     {
-    //         Method = "update",
-    //         Path = "/api/categories/1",
-    //         Date = UnixTimestamp(),
-    //         Body = (new { cid = 1, name = "BeveragesTesting" }).ToJson()
-    //     };
-
-    //     client.SendRequest(request.ToJson());
-    //     var response = client.ReadResponse();
+        client.SendRequest(request.ToJson());
+        var response = client.ReadResponse();
 
 
-    //     Assert.Contains("3 updated", response.Status.ToLower());
+        Assert.Contains("3 updated", response.Status.ToLower());
 
-    //     // reset data
+        // reset data
 
-    //     client = Connect();
+        client = Connect();
 
-    //     var resetRequest = new
-    //     {
-    //         Method = "update",
-    //         Path = "/api/categories/1",
-    //         Date = UnixTimestamp(),
-    //         Body = (new { cid = 1, name = "Beverages" }).ToJson()
-    //     };
+        var resetRequest = new
+        {
+            Method = "update",
+            Path = "/api/categories/1",
+            Date = UnixTimestamp(),
+            Body = (new { cid = 1, name = "Beverages" }).ToJson()
+        };
 
-    //     client.SendRequest(resetRequest.ToJson());
-    //     client.ReadResponse();
-    // }
+        client.SendRequest(resetRequest.ToJson());
+        client.ReadResponse();
+    }
 
     // [Fact]
     // public void Request_UpdateCategoryValidIdAndBody_ShouldReturnChangedCategoryName()
