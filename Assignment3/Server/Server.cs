@@ -66,6 +66,11 @@ public class EchoServer
 
       Response response = validator.ValidateRequest(request);
 
+      if (response.Success)
+      {
+        response = handleRequest(request);
+      }
+
       var responseJson = JsonSerializer.Serialize(response,
         new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
@@ -75,4 +80,36 @@ public class EchoServer
       await stream.FlushAsync();
     }
   }
+
+
+  private Response handleRequest(Request request)
+  {
+    switch (request.Method.ToLower())
+    {
+      case "echo":
+        return new Response { Body = request.Body };
+
+      case "read":
+        {
+          var urlParser = new UrlParser();
+          var parsed = urlParser.ParseUrl(request.Path);
+          if (parsed)
+          {
+            return new Response { Body = string.Empty };
+
+          }
+          else
+          {
+            return new Response { Status = "4 Bad Request" };
+
+          }
+
+        }
+
+
+      default:
+        return new Response { Body = string.Empty };
+    }
+  }
+
 }

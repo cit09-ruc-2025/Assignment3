@@ -15,7 +15,7 @@ namespace Assignment3
         {
             if (string.IsNullOrEmpty(request.Method?.Trim()))
             {
-                return new Response { Status = "missing method" };
+                return new Response { Status = "missing method", Success = false };
 
             }
 
@@ -23,22 +23,22 @@ namespace Assignment3
 
             if (!validMethods.Contains(request.Method.ToLower()))
             {
-                return new Response { Status = "illegal method" };
+                return new Response { Status = "illegal method", Success = false };
             }
 
-            if (string.IsNullOrEmpty(request.Path?.Trim()))
+            if (request.Method != "echo" && string.IsNullOrEmpty(request.Path?.Trim()))
             {
-                return new Response { Status = "missing path" };
+                return new Response { Status = "missing path", Success = false };
             }
 
             if (string.IsNullOrEmpty(request.Date?.Trim()))
             {
-                return new Response { Status = "missing date" };
+                return new Response { Status = "missing date", Success = false };
             }
 
             if (!long.TryParse(request.Date, out long _))
             {
-                return new Response { Status = "illegal date" };
+                return new Response { Status = "illegal date", Success = false };
 
             }
 
@@ -48,23 +48,25 @@ namespace Assignment3
             {
                 if (string.IsNullOrWhiteSpace(request.Body))
                 {
-                    return new Response { Status = "missing body" };
+                    return new Response { Status = "missing body", Success = false };
 
                 }
 
-                try
+                if (request.Method != "echo")
                 {
-                    JsonDocument.Parse(request.Body);
-                    return new Response { Status = "1 Ok" };
+                    try
+                    {
+                        JsonDocument.Parse(request.Body);
+                        return new Response { Status = "1 Ok", Success = true };
 
-                }
-                catch (JsonException)
-                {
-                    return new Response { Status = "illegal body" };
+                    }
+                    catch (JsonException)
+                    {
+                        return new Response { Status = "illegal body", Success = false };
+                    }
                 }
             }
-
-            return new Response { Status = "1 Ok" };
+            return new Response { Status = "1 Ok", Success = true };
         }
     }
 }

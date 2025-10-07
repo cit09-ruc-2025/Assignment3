@@ -162,76 +162,74 @@ public class PartIITests
     }
 
 
-    // [Fact]
-    // public void Constraint_RequestUpdateWithoutJsonBody_ShouldReturnIllegalBody()
-    // {
-    //     var client = Connect();
+    [Fact]
+    public void Constraint_RequestUpdateWithoutJsonBody_ShouldReturnIllegalBody()
+    {
+        var client = Connect();
 
-    //     var request = new
-    //     {
-    //         Method = "update",
-    //         Path = "/api/categories/1",
-    //         Date = UnixTimestamp(),
-    //         Body = "Hello World"
-    //     };
+        var request = new
+        {
+            Method = "update",
+            Path = "/api/categories/1",
+            Date = UnixTimestamp(),
+            Body = "Hello World"
+        };
 
-    //     client.SendRequest(request.ToJson());
-    //     var response = client.ReadResponse();
+        client.SendRequest(request.ToJson());
+        var response = client.ReadResponse();
 
 
-    //     Assert.Contains("illegal body", response.Status.ToLower());
+        Assert.Contains("illegal body", response.Status.ToLower());
 
-    // }
+    }
 
-    // /* Echo Test */
-    // [Fact]
-    // public void Echo_RequestWithBody_ShouldReturnBody()
-    // {
-    //     var client = Connect();
+    /* Echo Test */
+    [Fact]
+    public void Echo_RequestWithBody_ShouldReturnBody()
+    {
+        var client = Connect();
 
-    //     var request = new
-    //     {
-    //         Method = "echo",
-    //         Date = UnixTimestamp(),
-    //         Body = "Hello World"
-    //     };
+        var request = new
+        {
+            Method = "echo",
+            Date = UnixTimestamp(),
+            Body = "Hello World"
+        };
 
-    //     client.SendRequest(request.ToJson());
-    //     var response = client.ReadResponse();
+        client.SendRequest(request.ToJson());
+        var response = client.ReadResponse();
 
-    //     Assert.Equal("Hello World", response.Body);
+        Assert.Equal("Hello World", response.Body);
 
-    // }
+    }
 
-    // //////////////////////////////////////////////////////////
-    // /// 
-    // /// Testing API 
-    // /// 
-    // ////////////////////////////////////////////////////////// 
+    //////////////////////////////////////////////////////////
+    /// 
+    /// Testing API 
+    /// 
+    ////////////////////////////////////////////////////////// 
 
     // /* Path tests  */
 
+    [Fact]
+    public void Constraint_RequestWithInvalidPathId_ShouldReturnBadRequest()
+    {
+        var client = Connect();
 
+        var request = new
+        {
+            Method = "read",
+            Path = "/api/categories/xxx",
+            Date = UnixTimestamp()
+        };
 
-    // [Fact]
-    // public void Constraint_RequestWithInvalidPathId_ShouldReturnBadRequest()
-    // {
-    //     var client = Connect();
+        client.SendRequest(request.ToJson());
+        var response = client.ReadResponse();
 
-    //     var request = new
-    //     {
-    //         Method = "read",
-    //         Path = "/api/categories/xxx",
-    //         Date = UnixTimestamp()
-    //     };
+        var expectedResponse = new Response { Status = "4 Bad Request" };
 
-    //     client.SendRequest(request.ToJson());
-    //     var response = client.ReadResponse();
-
-    //     var expectedResponse = new Response { Status = "4 Bad Request" };
-
-    //     Assert.Equal(expectedResponse.ToJson().ToLower(), response.ToJson().ToLower());
-    // }
+        Assert.Equal(expectedResponse.ToJson().ToLower(), response.ToJson().ToLower());
+    }
 
     // [Fact]
     // public void Constraint_CreateWithPathId_ShouldReturnBadRequest()

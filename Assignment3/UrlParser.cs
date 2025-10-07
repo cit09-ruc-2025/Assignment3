@@ -29,6 +29,10 @@ namespace Assignment3
                 {
                     Id = tempId.ToString();
                 }
+                else
+                {
+                    return false;
+                }
             }
 
             Path = "/" + string.Join('/', split[0], split[1]);
