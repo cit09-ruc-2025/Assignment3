@@ -16,6 +16,8 @@ namespace Assignment3.Server
 
         private TcpListener _server;
 
+        private static readonly List<string> _validControllers = ["categories", "testing"];
+
         public int Port { get; set; }
 
         private ICategoryService _categoryService = new CategoryService();
@@ -64,13 +66,39 @@ namespace Assignment3.Server
                   new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }
                 );
 
+                var response = new Response();
+
                 RequestValidator validator = new RequestValidator();
 
-                Response response = validator.ValidateRequest(request);
+                response = validator.ValidateRequest(request);
 
                 if (response.Success)
                 {
-                    response = HandleRequest(request);
+
+                    var requestValidController = false;
+
+                    if (request.Method != "echo")
+                    {
+                        foreach (var controller in _validControllers)
+                        {
+
+                            if (request.Path.ToLower().Contains(controller.ToLower()))
+                            {
+                                requestValidController = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!requestValidController && request.Method != "echo")
+                    {
+                        response = new Response { Status = "5 Not found" };
+                    }
+                    else
+                    {
+                        response = HandleRequest(request);
+                    }
+
                 }
 
                 var responseJson = JsonSerializer.Serialize(response,
@@ -112,7 +140,11 @@ namespace Assignment3.Server
         private Response HandleRead(Request request)
         {
             var urlParser = new UrlParser();
-            urlParser.ParseUrl(request.Path);
+            var parsed = urlParser.ParseUrl(request.Path);
+            if (!parsed)
+            {
+                return new Response { Status = "4 Bad Request" };
+            }
             if (urlParser.HasId)
             {
                 var category = _categoryService.GetCategory(int.Parse(urlParser.Id));
