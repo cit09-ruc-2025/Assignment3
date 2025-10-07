@@ -95,7 +95,7 @@ namespace Assignment3.Server
                     return HandleRead(request);
 
                 case "create":
-                    return new Response();
+                    return HandleCreate(request);
 
                 case "update":
                     return new Response();
@@ -134,6 +134,41 @@ namespace Assignment3.Server
                 if (deleted) return new Response() { Status = "1 Ok" };
             }
             return new Response() { Status = "5 Not found" };
+        }
+
+        private Response HandleCreate(Request request)
+        {
+            var urlParser = new UrlParser();
+            var parsed = urlParser.ParseUrl(request.Path);
+
+            if (urlParser.HasId || !parsed)
+            {
+                return new Response { Status = "4 Bad Request" };
+            }
+            else
+            {
+                var categories = _categoryService.GetCategories();
+
+
+                var requestValue = JsonSerializer.Deserialize<Category>(request.Body, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+
+                if (string.IsNullOrEmpty(requestValue.name))
+                {
+                    return new Response { Status = "4 Bad Request" };
+                }
+
+                var created = _categoryService.CreateCategory(-1, requestValue.name);
+
+                if (created)
+                {
+                    var createdCategory = _categoryService.GetCategories().Find(c => c.name == requestValue.name);
+
+                    return new Response { Status = "1 Ok", Body = ConvertToJsonString(createdCategory) };
+                }
+
+                return new Response { Status = "4 Bad Request" };
+
+            }
         }
 
         private static string ConvertToJsonString<T>(T items)

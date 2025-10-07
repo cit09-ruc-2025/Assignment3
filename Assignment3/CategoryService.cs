@@ -36,11 +36,15 @@ namespace Assignment3
         // create a new category with auto-geterating IDs 
         private int _nextId = 4;
 
-        public Category CreateCategory(string name)
+        public bool CreateCategory(int cid, string name)
         {
-            var cat = new Category { cid = _nextId++, name = name };
+            if (_categories.Any((c) => c.cid == cid))
+            {
+                return false;
+            }
+            var cat = new Category { cid = cid < 0 ? _nextId++ : cid, name = name };
             _categories.Add(cat);
-            return cat;
+            return true;
         }
 
 
