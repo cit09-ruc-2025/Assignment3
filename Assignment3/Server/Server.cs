@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -93,15 +94,32 @@ public class EchoServer
         {
           var urlParser = new UrlParser();
           var parsed = urlParser.ParseUrl(request.Path);
-          if (parsed)
+          if (!parsed)
           {
-            return new Response { Body = string.Empty };
+            return new Response { Status = "4 Bad Request" };
 
           }
           else
           {
-            return new Response { Status = "4 Bad Request" };
+            if (request.Path.Contains("categories"))
+            {
+              if (urlParser.HasId)
+              {
 
+              }
+              else
+              {
+                var categoryService = new CategoryService();
+                var categories = categoryService.GetCategories();
+                Console.WriteLine(categories);
+                return new Response
+                {
+                  Status = "1 Ok",
+                  Body = ConvertToJsonString(categories)
+                };
+              }
+            }
+            return new Response { Body = string.Empty };
           }
 
         }
@@ -111,7 +129,7 @@ public class EchoServer
           var urlParser = new UrlParser();
           var parsed = urlParser.ParseUrl(request.Path);
 
-          if (urlParser.HasId)
+          if (urlParser.HasId || !parsed)
           {
             return new Response { Status = "4 Bad Request" };
           }
@@ -155,6 +173,11 @@ public class EchoServer
       default:
         return new Response { Body = string.Empty };
     }
+  }
+
+  private static string ConvertToJsonString(List<Category> items)
+  {
+    return JsonSerializer.Serialize(items, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
   }
 
 }

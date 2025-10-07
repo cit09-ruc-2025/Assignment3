@@ -293,40 +293,38 @@ public class PartIITests
         Assert.Equal(expectedResponse.ToJson().ToLower(), response.ToJson().ToLower());
     }
 
+    /* Read tests */
 
+    [Fact]
+    public void Request_ReadCategories_ShouldReturnOkAndListOfCategoriesInBody()
+    {
+        var client = Connect();
 
-    // /* Read tests */
+        var request = new
+        {
+            Method = "read",
+            Path = "/api/categories",
+            Date = UnixTimestamp()
+        };
 
-    // [Fact]
-    // public void Request_ReadCategories_ShouldReturnOkAndListOfCategoriesInBody()
-    // {
-    //     var client = Connect();
+        client.SendRequest(request.ToJson());
+        var response = client.ReadResponse();
 
-    //     var request = new
-    //     {
-    //         Method = "read",
-    //         Path = "/api/categories",
-    //         Date = UnixTimestamp()
-    //     };
+        var categories = new List<object>
+            {
+                new {cid = 1, name = "Beverages"},
+                new {cid = 2, name = "Condiments"},
+                new {cid = 3, name = "Confections"}
+            };
 
-    //     client.SendRequest(request.ToJson());
-    //     var response = client.ReadResponse();
+        var expectedResponse = new
+        {
+            Status = "1 Ok",
+            Body = categories.ToJson()
+        };
 
-    //     var categories = new List<object>
-    //         {
-    //             new {cid = 1, name = "Beverages"},
-    //             new {cid = 2, name = "Condiments"},
-    //             new {cid = 3, name = "Confections"}
-    //         };
-
-    //     var expectedResponse = new
-    //     {
-    //         Status = "1 Ok",
-    //         Body = categories.ToJson()
-    //     };
-
-    //     Assert.Equal(expectedResponse.ToJson(), response.ToJson());
-    // }
+        Assert.Equal(expectedResponse.ToJson(), response.ToJson());
+    }
 
     // [Fact]
     // public void Request_ReadCategoryWithValidId_ShouldReturnOkAndCategoryInBody()
