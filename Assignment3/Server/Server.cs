@@ -150,7 +150,26 @@ public class EchoServer
           }
           else
           {
-            return new Response { Body = string.Empty };
+            var categoryService = new CategoryService();
+
+            var categories = categoryService.GetCategories();
+
+            var newId = categories.Max((c) => c.Id) + 1;
+
+            var requestValue = JsonSerializer.Deserialize<Category>(request.Body, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+
+            var created = categoryService.CreateCategory(newId, requestValue.Name);
+
+            if (created)
+            {
+              var createdCategory = categoryService.GetCategories().Find(c => c.Name == requestValue.Name);
+
+              return new Response { Status = "1 Ok", Body = ConvertToJsonString(createdCategory) };
+            }
+
+            return new Response { Status = "4 Bad Request" };
+
+
           }
         }
 

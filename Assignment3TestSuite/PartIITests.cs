@@ -472,40 +472,40 @@ public class PartIITests
 
     // /* Create Tests  */
 
-    // [Fact]
-    // public void Request_CreateCategoryWithValidBodyArgument_ShouldCreateNewCategory()
-    // {
-    //     var client = Connect();
+    [Fact]
+    public void Request_CreateCategoryWithValidBodyArgument_ShouldCreateNewCategory()
+    {
+        var client = Connect();
 
-    //     var request = new
-    //     {
-    //         Method = "create",
-    //         Path = "/api/categories",
-    //         Date = UnixTimestamp(),
-    //         Body = (new { name = "Testing" }).ToJson()
-    //     };
+        var request = new
+        {
+            Method = "create",
+            Path = "/api/categories",
+            Date = UnixTimestamp(),
+            Body = (new { name = "Testing" }).ToJson()
+        };
 
-    //     client.SendRequest(request.ToJson());
-    //     var response = client.ReadResponse();
+        client.SendRequest(request.ToJson());
+        var response = client.ReadResponse();
 
-    //     var category = response.Body.FromJson<Category>();
+        var category = response.Body.FromJson<Category>();
 
-    //     Assert.Contains("Testing", category.Name);
-    //     Assert.True(category.Id > 0);
+        Assert.Contains("Testing", category.Name);
+        Assert.True(category.Id > 0);
 
-    //     // reset
+        // reset
 
-    //     client = Connect();
-    //     var resetRequest = new
-    //     {
-    //         Method = "delete",
-    //         Path = "/api/categories/" + category.Id,
-    //         Date = UnixTimestamp()
-    //     };
+        client = Connect();
+        var resetRequest = new
+        {
+            Method = "delete",
+            Path = "/api/categories/" + category.Id,
+            Date = UnixTimestamp()
+        };
 
-    //     client.SendRequest(resetRequest.ToJson());
-    //     client.ReadResponse();
-    // }
+        client.SendRequest(resetRequest.ToJson());
+        client.ReadResponse();
+    }
 
 
     // /* Delete Tests  */
