@@ -98,7 +98,7 @@ namespace Assignment3.Server
                     return HandleCreate(request);
 
                 case "update":
-                    return new Response();
+                    return HandleUpdate(request);
 
                 case "delete":
                     return HandleDelete(request);
@@ -169,6 +169,45 @@ namespace Assignment3.Server
                 return new Response { Status = "4 Bad Request" };
 
             }
+        }
+
+        private Response HandleUpdate(Request request)
+        {
+            var urlParser = new UrlParser();
+            var parsed = urlParser.ParseUrl(request.Path);
+
+            if (!urlParser.HasId || !parsed)
+            {
+                return new Response { Status = "4 Bad Request" };
+            }
+
+            if (request.Path.Contains("categories"))
+            {
+                var category = _categoryService.GetCategory(int.Parse(urlParser.Id));
+                if (category == null)
+                {
+                    return new Response { Status = "5 Not Found" };
+                }
+
+                var newValue = JsonSerializer.Deserialize<Category>(
+                    request.Body,
+                    new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }
+                );
+
+                var updated = _categoryService.UpdateCategory(int.Parse(urlParser.Id), newValue.Name);
+
+                if (updated)
+                {
+                    var updatedCategory = _categoryService.GetCategory(int.Parse(urlParser.Id));
+                    return new Response
+                    {
+                        Status = "3 Updated",
+                        Body = ConvertToJsonString(updatedCategory)
+                    };
+                }
+            }
+
+            return new Response { Body = string.Empty };
         }
 
         private static string ConvertToJsonString<T>(T items)
