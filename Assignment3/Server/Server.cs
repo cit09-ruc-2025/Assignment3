@@ -229,6 +229,18 @@ public class EchoServer
           }
           else
           {
+            if (request.Path.Contains("categories"))
+            {
+              var categoryService = new CategoryService();
+
+              var deleted = categoryService.DeleteCategory(int.Parse(urlParser.Id));
+
+              if (deleted)
+              {
+                return new Response { Status = "1 ok" };
+              }
+
+            }
             return new Response { Body = string.Empty };
           }
         }
