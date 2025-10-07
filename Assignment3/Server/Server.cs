@@ -103,15 +103,21 @@ public class EchoServer
           {
             if (request.Path.Contains("categories"))
             {
+              var categoryService = new CategoryService();
+
               if (urlParser.HasId)
               {
 
+                var category = categoryService.GetCategory(int.Parse(urlParser.Id));
+                return new Response
+                {
+                  Status = "1 Ok",
+                  Body = ConvertToJsonString(category)
+                };
               }
               else
               {
-                var categoryService = new CategoryService();
                 var categories = categoryService.GetCategories();
-                Console.WriteLine(categories);
                 return new Response
                 {
                   Status = "1 Ok",
@@ -175,7 +181,7 @@ public class EchoServer
     }
   }
 
-  private static string ConvertToJsonString(List<Category> items)
+  private static string ConvertToJsonString<T>(T items)
   {
     return JsonSerializer.Serialize(items, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
   }

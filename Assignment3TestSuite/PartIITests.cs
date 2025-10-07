@@ -326,29 +326,29 @@ public class PartIITests
         Assert.Equal(expectedResponse.ToJson(), response.ToJson());
     }
 
-    // [Fact]
-    // public void Request_ReadCategoryWithValidId_ShouldReturnOkAndCategoryInBody()
-    // {
-    //     var client = Connect();
+    [Fact]
+    public void Request_ReadCategoryWithValidId_ShouldReturnOkAndCategoryInBody()
+    {
+        var client = Connect();
 
-    //     var request = new
-    //     {
-    //         Method = "read",
-    //         Path = "/api/categories/1",
-    //         Date = UnixTimestamp()
-    //     };
+        var request = new
+        {
+            Method = "read",
+            Path = "/api/categories/1",
+            Date = UnixTimestamp()
+        };
 
-    //     client.SendRequest(request.ToJson());
-    //     var response = client.ReadResponse();
+        client.SendRequest(request.ToJson());
+        var response = client.ReadResponse();
 
-    //     var expectedResponse = new Response
-    //     {
-    //         Status = "1 Ok",
-    //         Body = (new { cid = 1, name = "Beverages" }.ToJson())
-    //     };
+        var expectedResponse = new Response
+        {
+            Status = "1 Ok",
+            Body = (new { cid = 1, name = "Beverages" }.ToJson())
+        };
 
-    //     Assert.Equal(expectedResponse.ToJson(), response.ToJson());
-    // }
+        Assert.Equal(expectedResponse.ToJson(), response.ToJson());
+    }
 
     // [Fact]
     // public void Request_ReadCategoryWithInvalidId_ShouldReturnNotFound()
