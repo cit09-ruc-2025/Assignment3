@@ -13,42 +13,51 @@ namespace Assignment3
 
         public Response ValidateRequest(Request request)
         {
+            var errorList = new List<string>();
+            var success = true;
+
             if (string.IsNullOrEmpty(request.Method?.Trim()))
             {
-                return new Response { Status = "missing method", Success = false };
+                errorList.Add("missing method");
+                success = false;
 
             }
 
             string[] validMethods = { "create", "read", "update", "delete", "echo" };
 
-            if (!validMethods.Contains(request.Method.ToLower()))
+            if (!validMethods.Contains(request.Method?.ToLower()))
             {
-                return new Response { Status = "illegal method", Success = false };
+                errorList.Add("illegal method");
+                success = false;
             }
 
             if (request.Method != "echo" && string.IsNullOrEmpty(request.Path?.Trim()))
             {
-                return new Response { Status = "missing path", Success = false };
+                errorList.Add("missing path");
+                success = false;
             }
 
             if (string.IsNullOrEmpty(request.Date?.Trim()))
             {
-                return new Response { Status = "missing date", Success = false };
+                errorList.Add("missing date");
+                success = false;
             }
 
             if (!long.TryParse(request.Date, out long _))
             {
-                return new Response { Status = "illegal date", Success = false };
+                errorList.Add("illegal date");
+                success = false;
 
             }
 
             string[] withBody = { "create", "update", "echo" };
 
-            if (withBody.Contains(request.Method.ToLower()))
+            if (withBody.Contains(request.Method?.ToLower()))
             {
                 if (string.IsNullOrWhiteSpace(request.Body))
                 {
-                    return new Response { Status = "missing body", Success = false };
+                    errorList.Add("missing body");
+                    success = false;
 
                 }
 
@@ -57,16 +66,19 @@ namespace Assignment3
                     try
                     {
                         JsonDocument.Parse(request.Body);
-                        return new Response { Status = "1 Ok", Success = true };
 
                     }
-                    catch (JsonException)
+                    catch (Exception)
                     {
-                        return new Response { Status = "illegal body", Success = false };
+                        errorList.Add("illegal body");
+                        success = false;
                     }
                 }
             }
-            return new Response { Status = "1 Ok", Success = true };
+
+            if (success) return new Response { Status = "1 Ok", Success = true };
+
+            return new Response { Status = "4 " + string.Join("; ", errorList), Success = false };
         }
     }
 }
