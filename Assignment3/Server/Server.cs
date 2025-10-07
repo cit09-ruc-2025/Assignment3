@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Assignment3;
+using Assignment3.Interfaces;
 
 namespace Server;
 
@@ -18,6 +19,8 @@ public class EchoServer
   private TcpListener _server;
 
   public int Port { get; set; }
+
+  private ICategoryService _categoryService = new CategoryService();
 
   public EchoServer(int port)
   {
@@ -103,12 +106,11 @@ public class EchoServer
           {
             if (request.Path.Contains("categories"))
             {
-              var categoryService = new CategoryService();
 
               if (urlParser.HasId)
               {
 
-                var category = categoryService.GetCategory(int.Parse(urlParser.Id));
+                var category = _categoryService.GetCategory(int.Parse(urlParser.Id));
 
                 if (category == null)
                 {
@@ -126,7 +128,7 @@ public class EchoServer
               }
               else
               {
-                var categories = categoryService.GetCategories();
+                var categories = _categoryService.GetCategories();
                 return new Response
                 {
                   Status = "1 Ok",
@@ -150,19 +152,18 @@ public class EchoServer
           }
           else
           {
-            var categoryService = new CategoryService();
-
-            var categories = categoryService.GetCategories();
+            var categories = _categoryService.GetCategories();
 
             var newId = categories.Max((c) => c.Id) + 1;
 
+
             var requestValue = JsonSerializer.Deserialize<Category>(request.Body, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
-            var created = categoryService.CreateCategory(newId, requestValue.Name);
+            var created = _categoryService.CreateCategory(newId, requestValue.Name);
 
             if (created)
             {
-              var createdCategory = categoryService.GetCategories().Find(c => c.Name == requestValue.Name);
+              var createdCategory = _categoryService.GetCategories().Find(c => c.Name == requestValue.Name);
 
               return new Response { Status = "1 Ok", Body = ConvertToJsonString(createdCategory) };
             }
@@ -186,9 +187,8 @@ public class EchoServer
           {
             if (request.Path.Contains("categories"))
             {
-              var categoryService = new CategoryService();
 
-              var category = categoryService.GetCategory(int.Parse(urlParser.Id));
+              var category = _categoryService.GetCategory(int.Parse(urlParser.Id));
 
               if (category == null)
               {
@@ -200,11 +200,11 @@ public class EchoServer
 
               var newValue = JsonSerializer.Deserialize<Category>(request.Body, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
-              var updated = categoryService.UpdateCategory(int.Parse(urlParser.Id), newValue.Name);
+              var updated = _categoryService.UpdateCategory(int.Parse(urlParser.Id), newValue.Name);
 
               if (updated)
               {
-                var updateCategory = categoryService.GetCategory(int.Parse(urlParser.Id));
+                var updateCategory = _categoryService.GetCategory(int.Parse(urlParser.Id));
                 return new Response
                 {
                   Status = "3 updated",
@@ -231,9 +231,15 @@ public class EchoServer
           {
             if (request.Path.Contains("categories"))
             {
-              var categoryService = new CategoryService();
 
-              var deleted = categoryService.DeleteCategory(int.Parse(urlParser.Id));
+              var category = _categoryService.GetCategory(int.Parse(urlParser.Id));
+
+              if (category == null)
+              {
+                return new Response { Status = "5 not found" };
+              }
+
+              var deleted = _categoryService.DeleteCategory(int.Parse(urlParser.Id));
 
               if (deleted)
               {
