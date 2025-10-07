@@ -83,29 +83,29 @@ public class PartIITests
         Assert.Contains("illegal method", response.Status.ToLower());
     }
 
-    // [Theory]
-    // [InlineData("create")]
-    // [InlineData("read")]
-    // [InlineData("update")]
-    // [InlineData("delete")]
-    // public void Constraint_RequestForCreateReadUpdateDeleteWithoutResource_ShouldReturnMissingPath(string method)
-    // {
-    //     var client = Connect();
+    [Theory]
+    [InlineData("create")]
+    [InlineData("read")]
+    [InlineData("update")]
+    [InlineData("delete")]
+    public void Constraint_RequestForCreateReadUpdateDeleteWithoutResource_ShouldReturnMissingPath(string method)
+    {
+        var client = Connect();
 
-    //     var request = new
-    //     {
-    //         Method = method,
-    //         Date = DateTimeOffset.Now.ToUnixTimeSeconds().ToString()
-    //     };
+        var request = new
+        {
+            Method = method,
+            Date = DateTimeOffset.Now.ToUnixTimeSeconds().ToString()
+        };
 
-    //     client.SendRequest(request.ToJson());
+        client.SendRequest(request.ToJson());
 
-    //     var response = client.ReadResponse();
+        var response = client.ReadResponse();
 
-    //     Assert.Contains("missing path", response.Status.ToLower());
-    // }
+        Assert.Contains("missing path", response.Status.ToLower());
+    }
 
-    // /* Date Tests    */
+    /* Date Tests    */
 
     // [Fact]
     // public void Constraint_RequestWithoutDate_ShouldReturnMissingDate()
@@ -119,47 +119,47 @@ public class PartIITests
     //     Assert.Contains("missing date", response.Status.ToLower());
     // }
 
-    // [Fact]
-    // public void Constraint_RequestWhereDateIsNotUnixTime_ShouldReturnIllegalDate()
-    // {
-    //     var client = Connect();
+    [Fact]
+    public void Constraint_RequestWhereDateIsNotUnixTime_ShouldReturnIllegalDate()
+    {
+        var client = Connect();
 
-    //     var request = new
-    //     {
-    //         Method = "update",
-    //         Path = "testing",
-    //         Date = DateTimeOffset.Now.ToString(),
-    //         Body = (new { cid = 1, Name = "Beverages" }).ToJson()
-    //     };
+        var request = new
+        {
+            Method = "update",
+            Path = "testing",
+            Date = DateTimeOffset.Now.ToString(),
+            Body = (new { cid = 1, Name = "Beverages" }).ToJson()
+        };
 
-    //     client.SendRequest(request.ToJson());
-    //     var response = client.ReadResponse();
+        client.SendRequest(request.ToJson());
+        var response = client.ReadResponse();
 
-    //     Assert.Contains("illegal date", response.Status.ToLower());
-    // }
+        Assert.Contains("illegal date", response.Status.ToLower());
+    }
 
-    // /* Body Tests    */
+    /* Body Tests    */
 
-    // [Theory]
-    // [InlineData("create")]
-    // [InlineData("update")]
-    // [InlineData("echo")]
-    // public void Constraint_RequestForCreateUpdateEchoWithoutBody_ShouldReturnMissingBody(string method)
-    // {
-    //     var client = Connect();
+    [Theory]
+    [InlineData("create")]
+    [InlineData("update")]
+    [InlineData("echo")]
+    public void Constraint_RequestForCreateUpdateEchoWithoutBody_ShouldReturnMissingBody(string method)
+    {
+        var client = Connect();
 
-    //     var request = new
-    //     {
-    //         Method = method,
-    //         Path = "testing",
-    //         Date = UnixTimestamp()
-    //     };
+        var request = new
+        {
+            Method = method,
+            Path = "testing",
+            Date = UnixTimestamp()
+        };
 
-    //     client.SendRequest(request.ToJson());
-    //     var response = client.ReadResponse();
+        client.SendRequest(request.ToJson());
+        var response = client.ReadResponse();
 
-    //     Assert.Contains("missing body", response.Status.ToLower());
-    // }
+        Assert.Contains("missing body", response.Status.ToLower());
+    }
 
 
     // [Fact]
